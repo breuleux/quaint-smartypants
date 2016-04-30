@@ -1,0 +1,20 @@
+
+require:
+   inquirer-promise as inq
+   chalk
+
+
+async quaint-setup(config, instructions) =
+   url = "https://github.com/breuleux/quaint-smartypants"
+   print 'Plugin documentation: {chalk.bold.cyan(url)}'
+
+   data = config.plugins["smartypants"] or= {=}
+
+   data.locale = await inq.list{
+      "What locale to use for translation?"
+      {.en, .fr}
+      {default = 0}
+   }
+
+
+provide = quaint-setup

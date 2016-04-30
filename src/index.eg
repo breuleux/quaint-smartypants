@@ -1,0 +1,36 @@
+
+install(@, options) =
+   rp{x, y} = @register-postprocessor{x, y}
+
+   rp{"(^|[ \"])'", "$1‘"}
+   rp{"'([ \".,!?]|$)", "’$1"}
+   rp{"---", "—"}
+   rp{"--", "–"}
+   rp{"\\.\\.\\.", "…"}
+   rp{R.g"\*\*\*", .asterism % "⁂"}
+
+   match options.locale or .en:
+      .en or .english ->
+         rp{'(^| )"', "$1“"}
+         rp{'"([ .,!?]|$)', "”$1"}
+         rp{"<<", "“"}
+         rp{">>", "”"}
+      .fr or .french ->
+         rp{R.g"([a-zA-ZéÉèÈàÀùÙ]) *([!?:])", "$1\u00A0$2"}
+         rp{"<<", "«\u00A0"}
+         rp{">>", "\u00A0»"}
+         rp{'(^| )"', "$1«\u00A0"}
+         rp{'"([ .,!?]|$)', "\u00A0»$1"}
+         rp{"oe", "œ"}
+         rp{"Oe", "Œ"}
+      loc ->
+         throw E.quaint-smartypants.unsupported-locale with
+            'No support for locale "{loc}" in quaint-smartypants'
+
+main(*match) =
+   {@, options = {=}} when @is-quaint-engine ->
+      install(@, options)
+   {options = {=}} ->
+      {@} -> main(@, options)
+
+provide = main
