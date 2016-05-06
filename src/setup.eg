@@ -16,5 +16,42 @@ async quaint-setup(config, instructions) =
       {default = 0}
    }
 
+   feature-list = await inq.checkbox{
+      "Select the replacement rules you want:"
+      {{value = 'backtickQuotes'
+        name = "Latex-style quotes:   ``text'' -> “text”"
+        checked = true}
+       {value = 'angleQuotes'
+        name = "Angle bracket quotes: <<text>> -> “text”"
+        checked = data.locale === .fr}
+       {value = 'quotes'
+        name = "Plain double quotes:  \"text\" -> “text”"
+        checked = false}
+       {value = 'singleQuotes'
+        name = "Single quotes:        'text' -> ‘text’"
+        checked = true}
+       {value = 'enDash'
+        name = "En dash:              -- -> –"
+        checked = true}
+       {value = 'emDash'
+        name = "Em dash:              --- -> —  (wider than en dash)"
+        checked = true}
+       {value = 'ellipsis'
+        name = "Ellipsis:             ... -> …"
+        checked = true}
+       {value = 'asterism'
+        name = "Asterism:             *** -> ⁂"
+        checked = false}
+       {value = 'spacePunctuation'
+        name = "Space before !?:      Hello! -> Hello !"
+        checked = data.locale === .fr}
+       {value = 'oe'
+        name = "Œ ligature            Coeur -> Cœur"
+        checked = data.locale === .fr}
+      }
+   }
+
+   data.features = object with 'backtickQuotes/angleQuotes/quotes/singleQuotes/enDash/emDash/ellipsis/asterism/spacePunctuation/oe'.split{"/"} each name -> {name, name in feature-list}
+
 
 provide = quaint-setup

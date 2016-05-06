@@ -1,32 +1,47 @@
 
 install(@, options) =
+   feat = options.features
+
    rp{x, y} = @register-postprocessor{x, y}
 
-   rp{"(^|[ \"])'", "$1‘"}
-   rp{"'([ \".,!?]|$)", "’$1"}
-   rp{"---", "—"}
-   rp{"--", "–"}
-   rp{"\\.\\.\\.", "…"}
-   rp{R.g"\*\*\*", .asterism % "⁂"}
+   if feat.single-quotes:
+      rp{"(^|[ \"])'", "$1‘"}
+      rp{"'([ \".,!?]|$)", "’$1"}
+   if feat.em-dash:
+      rp{"---", "—"}
+   if feat.en-dash:
+      rp{"--", "–"}
+   if feat.ellipsis:
+      rp{"\\.\\.\\.", "…"}
+   if feat.asterism:
+      rp{R.g"\*\*\*", .asterism % "⁂"}
 
    match options.locale or .en:
       .en or .english ->
-         rp{"``", "“"}
-         rp{"''(?=[^'])", "”"}
-         rp{'(^| )"', "$1“"}
-         rp{'"([ .,!?]|$)', "”$1"}
-         rp{"<<", "“"}
-         rp{">>", "”"}
+         if feat.backtick-quotes:
+            rp{"``", "“"}
+            rp{"''(?=[^'])", "”"}
+         if feat.quotes:
+            rp{'(^| )"', "$1“"}
+            rp{'"([ .,!?]|$)', "”$1"}
+         if feat.angle-quotes:
+            rp{"<<", "“"}
+            rp{">>", "”"}
       .fr or .french ->
-         rp{R.g"([a-zA-ZéÉèÈàÀùÙ]) *([!?:])", "$1\u00A0$2"}
-         rp{"<<", "«\u00A0"}
-         rp{">>", "\u00A0»"}
-         rp{"``", "«\u00A0"}
-         rp{"''(?=[^'])", "\u00A0»"}
-         rp{'(^| )"', "$1«\u00A0"}
-         rp{'"([ .,!?]|$)', "\u00A0»$1"}
-         rp{"oe", "œ"}
-         rp{"Oe", "Œ"}
+         if feat.space-punctuation:
+            rp{R.g"([a-zA-ZéÉèÈàÀùÙ]) *([!?:])", "$1\u00A0$2"}
+         if feat.angle-quotes:
+            rp{"<<", "«\u00A0"}
+            rp{">>", "\u00A0»"}
+         if feat.backtick-quotes:
+            rp{"``", "«\u00A0"}
+            rp{"''(?=[^'])", "\u00A0»"}
+         if feat.quotes:
+            rp{'(^| )"', "$1«\u00A0"}
+            rp{'"([ .,!?]|$)', "\u00A0»$1"}
+         if feat.oe:
+            rp{"oe", "œ"}
+            rp{"Oe", "Œ"}
       loc ->
          throw E.quaint-smartypants.unsupported-locale with
             'No support for locale "{loc}" in quaint-smartypants'

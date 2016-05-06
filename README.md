@@ -31,7 +31,7 @@ equivalents:
 * Specific to **en** locale:
   * `"..."` or `<<...>>` becomes curly quotes: `“...”`
 * Specific to **fr** locale:
-  * `"..."` or `<<...>>` become guillemets: `« »`
+  * `"..."` or `<<...>>` becomes guillemets: `« ... »`
   * Insert non-breaking space before `!`, `?` and `:`.
   * `oe -> œ` and `Oe -> Œ`
 
