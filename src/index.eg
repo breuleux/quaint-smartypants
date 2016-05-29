@@ -1,6 +1,36 @@
 
+provide:
+   lang-defaults
+
+lang-defaults = {
+   en = {
+      backtickQuotes = true
+      angleQuotes = false
+      quotes = false
+      singleQuotes = true
+      enDash = true
+      emDash = true
+      ellipsis = true
+      asterism = false
+      spacePunctuation = false
+      oe = false
+   }
+   fr = {
+      backtickQuotes = true
+      angleQuotes = true
+      quotes = false
+      singleQuotes = true
+      enDash = true
+      emDash = true
+      ellipsis = true
+      asterism = false
+      spacePunctuation = true
+      oe = true
+   }
+}
+
 install(@, options) =
-   feat = options.features
+   feat = lang-defaults[options.locale or .en] & [options.features or {=}]
 
    rp{x, y} = @register-postprocessor{x, y}
 

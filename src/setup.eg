@@ -2,6 +2,8 @@
 require:
    inquirer-promise as inq
    chalk
+   .index ->
+      lang-defaults
 
 
 async quaint-setup(config, instructions) =
@@ -16,38 +18,40 @@ async quaint-setup(config, instructions) =
       {default = 0}
    }
 
+   defaults = lang-defaults[data.locale]
+
    feature-list = await inq.checkbox{
       "Select the replacement rules you want:"
       {{value = 'backtickQuotes'
         name = "Latex-style quotes:   ``text'' -> “text”"
-        checked = true}
+        checked = defaults.backtick-quotes}
        {value = 'angleQuotes'
         name = "Angle bracket quotes: <<text>> -> “text”"
-        checked = data.locale === .fr}
+        checked = defaults.angle-quotes}
        {value = 'quotes'
         name = "Plain double quotes:  \"text\" -> “text”"
-        checked = false}
+        checked = defaults.quotes}
        {value = 'singleQuotes'
         name = "Single quotes:        'text' -> ‘text’"
-        checked = true}
+        checked = defaults.single-quotes}
        {value = 'enDash'
         name = "En dash:              -- -> –"
-        checked = true}
+        checked = defaults.en-dash}
        {value = 'emDash'
         name = "Em dash:              --- -> —  (wider than en dash)"
-        checked = true}
+        checked = defaults.em-dash}
        {value = 'ellipsis'
         name = "Ellipsis:             ... -> …"
-        checked = true}
+        checked = defaults.ellipsis}
        {value = 'asterism'
         name = "Asterism:             *** -> ⁂"
-        checked = false}
+        checked = defaults.asterism}
        {value = 'spacePunctuation'
         name = "Space before !?:      Hello! -> Hello !"
-        checked = data.locale === .fr}
+        checked = defaults.space-punctuation}
        {value = 'oe'
         name = "Œ ligature            Coeur -> Cœur"
-        checked = data.locale === .fr}
+        checked = defaults.oe}
       }
    }
 
