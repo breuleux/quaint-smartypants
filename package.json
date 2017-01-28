@@ -17,7 +17,7 @@
   "dependencies": {
     "chalk": "^1.1.1",
     "earlgrey-runtime": ">=0.0.11",
-    "inquirer-promise": ">=0.0.3"
+    "inquirer-shortcuts": "^1.1.0"
   },
   "devDependencies": {
     "earlgrey": ">=0.0.13",
